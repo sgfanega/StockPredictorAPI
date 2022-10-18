@@ -94,4 +94,4 @@ api.add_resource(Stocks, '/')
 api.add_resource(Stock, '/<string:tickerSymbol>')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
