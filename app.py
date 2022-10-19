@@ -15,19 +15,22 @@ class StockModel(db.Model):
     stockName = db.Column(db.String, nullable=False)
     tickerSymbol = db.Column(db.String, nullable=False)
     predictions = db.Column(db.String, nullable=False)
+    confidence = db.Column(db.Float, nullable=False)
 
     def __repr__(self):
         return "<Stock(stockName='%s', tickerSymbol='%s', predictions='%s')>" % (
             self.stockName,
             self.tickerSymbol,
-            self.predictions
+            self.predictions,
+            self.confidence
         )
 
 stock_fields = {
     'id': fields.Integer,
     'stockName': fields.String,
     'tickerSymbol': fields.String,
-    'predictions': fields.String
+    'predictions': fields.String,
+    'confidence': fields.Float
 }
 
 # Stocks Resource Class
@@ -48,7 +51,8 @@ class Stocks(Resource):
         stock = StockModel(
             stockName = data['stockName'],
             tickerSymbol = data['tickerSymbol'],
-            predictions = data['predictions']
+            predictions = data['predictions'],
+            confidence = data['confidence']
         )
 
         db.session.add(stock)
@@ -75,6 +79,8 @@ class Stock(Resource):
             stock.tickerSymbol = data['tickerSymbol']
         if 'predictions' in data:
             stock.predictions = data['predictions']
+        if 'confidence' in data:
+            stock.confidence = data['confidence']
         
         db.session.commit()
         return stock, 201
